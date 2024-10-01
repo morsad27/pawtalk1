@@ -26,21 +26,21 @@ export default function LoginScreen() {
   
   const onPress = useCallback(async () => {
     try {
-      const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
-        redirectUrl: Linking.createURL('/home', { scheme: 'myapp' }),
-      })
+    const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow({
+      redirectUrl: Linking.createURL('/(tabs)/home', { scheme: 'myapp' }),
+})
 
-      if (createdSessionId) {
-       
-      } else {
-        // Use signIn or signUp for next steps such as MFA
-      }
-    } catch (err) {
-      console.error('OAuth error', err)
-    }
+    if (createdSessionId) {
+
+    } else {
+     // Use signIn or signUp for next steps such as MFA
+     }
+  } catch (err) {
+    console.error('OAuth error', err)
+   }
   }, [])
 
-  return (
+ return (
     <View style={{
       backgroundColor:Colors.WHITE,
       height:'100%'
@@ -68,10 +68,12 @@ export default function LoginScreen() {
         fontFamily:'BOLD',
         fontSize: 18,
         textAlign:'center',
-        
+        color:Colors.GRAY
       }}>
-        Wala pang mailagay dito
+        Wala pang mailagay dito!!
       </Text>
+
+
       <Pressable
       onPress={onPress}
       style={{

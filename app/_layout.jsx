@@ -38,7 +38,8 @@ export default function RootLayout() {
   useFonts({
     'BOLD':require('./../assets/fonts/LTSaeada-Bold.otf'),
     'LIGHT':require('./../assets/fonts/LTSaeada-Light.otf'),
-    'REGULAR':require('./../assets/fonts/LTSaeada-Regular.otf')
+    'REGULAR':require('./../assets/fonts/LTSaeada-Regular.otf'),
+    'SEMI_BOLD':require('./../assets/fonts/LTSaeada-SemiBold.otf')
   })
   return (
     <ClerkProvider 
@@ -46,6 +47,9 @@ export default function RootLayout() {
     publishableKey={publishableKey}>
     <Stack>
       <Stack.Screen name="index" />
+      <Stack.Screen name="(tabs)" 
+      options={{
+        headerShown:false}}/>
       <Stack.Screen name="login/index" 
       options={{
         headerShown:false
