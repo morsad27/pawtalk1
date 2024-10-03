@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'rea
 import React from 'react';
 import Colors from '../../constants/Colors';
 import { useRouter } from 'expo-router'
-
+import MarkFav from '../MarkFav';
 export default function PetListItem({ pet }) {
   const router=useRouter();
   return (
@@ -17,6 +17,14 @@ export default function PetListItem({ pet }) {
         style={styles.image}
         resizeMode="cover"
       />
+      <View style={{
+        position:'absolute',
+        zIndex:10,
+        left:10,
+        bottom:10
+      }}>
+        <MarkFav pet={pet} color={'white'} name={'heart'} />
+      </View>
       <View style={styles.textContainer}>
         {/* Name and Age on the same row */}
         <View style={styles.nameAgeContainer}>

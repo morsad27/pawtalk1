@@ -43,12 +43,13 @@ export default function LoginScreen() {
  return (
     <View style={{
       backgroundColor:Colors.WHITE,
-      height:'100%'
+      height:'100%',
+      marginHorizontalAlignment: 'center',
     }}>
-    <Image source={require('./../../assets/images/FRONT.png')}
+    <Image source={require('./../../assets/images/front.png')}
     style={{
       width:'100%',
-      height: 400
+      height: 500
       
     }}
     />
@@ -58,19 +59,20 @@ export default function LoginScreen() {
       alignItems:'center'
     }}>
       <Text style={{
-        fontFamily:'REGULAR',
+        fontFamily:'BOLD',
         fontSize: 25,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop:5
       }}>
-        Ready to make a new friend?
+        Find your best companion with us!
       </Text>
       <Text style={{
-        fontFamily:'BOLD',
+        fontFamily:'REGULAR',
         fontSize: 18,
         textAlign:'center',
         color:Colors.GRAY
       }}>
-        Wala pang mailagay dito!!
+        Join & discover the best suitable pets in your location or near you.
       </Text>
 
 
