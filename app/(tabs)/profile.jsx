@@ -3,6 +3,7 @@ import React from 'react'
 import {useAuth, useUser} from '@clerk/clerk-expo';
 import Colors from '../../constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
 
 export default function Profile() {
@@ -15,6 +16,12 @@ export default function Profile() {
     },
     {
       id: 2,
+      name:'My Post',
+      icon:'paw',
+      path:'/../user-post'
+    },
+    {
+      id: 3,
       name:'Logout',
       icon:'exit',
       path:'logout'

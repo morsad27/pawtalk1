@@ -1,67 +1,77 @@
-import { View, Text, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from '../../config/FirebaseConfig'
-import { useUser } from '@clerk/clerk-expo'
-import UserItem from '../../components/Inbox/UserItem'
+import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../config/FirebaseConfig';
+import { useUser } from '@clerk/clerk-expo';
+import UserItem from '../../components/Inbox/UserItem';
 
 export default function Inbox() {
-  const {user}=useUser();
-  const[userList,setUserList]=useState([  ]);
-  const[loader,setLoader]=useState(false);
+  const { user } = useUser();
+  const [userList, setUserList] = useState([]);
+  const [loader, setLoader] = useState(false);
 
-  useEffect(() =>{
-    user&&GetUserList();
-  },[user])
-  //Kukunin yung mga users depende sa kung anong mga users/messages kung meron man.
-  const GetUserList =async() =>{
-    setLoader(true)
-    setUserList([])
-    const q=query(collection(db,'Chat'), 
-    where('userIds','array-contains',user?.primaryEmailAddress.emailAddress));
+  useEffect(() => {
+    if (user) {
+      GetUserList(); // Fetch user list when the user is available
+    }
+  }, [user]);
 
-    const querySnapshot=await getDocs(q);
+  // Fetch user list based on the chats that include the logged-in user
+  const GetUserList = async () => {
+    setLoader(true);
+    try {
+      const q = query(
+        collection(db, 'Chat'),
+        where('userIds', 'array-contains', user?.primaryEmailAddress.emailAddress)
+      );
+      
+      const querySnapshot = await getDocs(q);
+      const fetchedUsers = [];
+      
+      querySnapshot.forEach(doc => {
+        fetchedUsers.push({ ...doc.data(), id: doc.id }); // Include document ID in data
+      });
 
-    querySnapshot.forEach(doc=>{
-     
-      setUserList(prevList=>[...prevList,doc.data()]);
-    })
+      setUserList(fetchedUsers); // Set the fetched users to state
+    } catch (error) {
+      console.error("Error fetching user list:", error);
+    }
     setLoader(false);
-  }
+  };
 
-  const MapOtherUserList=()=>{
-    const list=[];
-    userList.forEach((record)=>{
-      const otherUser=record.users?.filter(user=>user?.email!=user?.primaryEmailAddress?.emailAddress); 
-      const result={
-        docId:record.id,
-        ...otherUser[0]
+  // Map user list to display only the other user in the conversation
+  const MapOtherUserList = () => {
+    const list = [];
+    userList.forEach((record) => {
+      const otherUser = record.users?.filter(u => u?.email !== user?.primaryEmailAddress?.emailAddress);
+      if (otherUser && otherUser[0]) {
+        list.push({
+          docId: record.id, // Set document ID for chat
+          ...otherUser[0],  // Include other user's data
+        });
       }
-      list.push(result)
-    })
+    });
     return list;
-  }
+  };
+
   return (
-    <View style={{
-      paddingLeft:20,
-      marginTop:20, 
-    }}>
+    <View style={{ paddingLeft: 20, marginTop: 20 }}>
       <Text style={{
-        fontFamily:'SEMI_BOLD',
-        fontSize:30,
-        marginTop:20
+        fontFamily: 'SEMI_BOLD',
+        fontSize: 30,
+        marginTop: 20,
       }}>Inbox</Text>
 
-      <FlatList style={{
-        marginTop:20
-      }}
-      data={MapOtherUserList()}
-      refreshing={loader}
-      onRefresh={GetUserList}
-      renderItem={({item,index})=>(
-        <UserItem userInfo={item} key={index}/>
-      )}
+      <FlatList
+        style={{ marginTop: 20 }}
+        data={MapOtherUserList()}
+        refreshing={loader}
+        onRefresh={GetUserList}
+        keyExtractor={(item) => item.docId} // Use unique key for each item
+        renderItem={({ item }) => (
+          <UserItem userInfo={item} />
+        )}
       />
     </View>
-  )
+  );
 }

@@ -246,6 +246,7 @@ const style = StyleSheet.create({
         marginVertical:10,
         fontFamily: 'SEMI_BOLD',
         alignItems:'center',
-        marginBottom: 50
+        marginBottom: 50,
+        borderRadius: 20,
     }
 })
