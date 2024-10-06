@@ -3,6 +3,7 @@ import { Link, useRootNavigationState } from "expo-router";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 import { Redirect } from "expo-router";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Index() {
 
@@ -20,7 +21,7 @@ const CheckNavLoaded=()=>{
 }
   
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
        
@@ -33,6 +34,6 @@ const CheckNavLoaded=()=>{
          <Redirect href={'/(tabs)/home'}/>
          :<Redirect href={'/login'} />}
 
-    </View>
+    </SafeAreaView>
   );
 }
