@@ -8,7 +8,7 @@ export default function Add() {
 
   useEffect(() => {
     setTimeout(() => {
-      setStatusBarStyle("dark");
+      setStatusBarStyle("dark"); //Testing
     }, 0);
   }, []);
 
