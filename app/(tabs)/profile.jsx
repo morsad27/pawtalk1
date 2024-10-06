@@ -1,10 +1,11 @@
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import {useAuth, useUser} from '@clerk/clerk-expo';
 import Colors from '../../constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
+import Button from '../../components/EditProfile/Button';
 
 export default function Profile() {
   const Menu=[
@@ -25,7 +26,8 @@ export default function Profile() {
       name:'Logout',
       icon:'exit',
       path:'logout'
-    }
+    },
+    
     
     
   ]
@@ -104,6 +106,17 @@ export default function Profile() {
            }}>{item.name}</Text>
           </TouchableOpacity>
       )} />
+
+<View style={styles.footerContainer}>
+        <Button theme='primary' label="" />
+      </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: 'center',
+  },
+})
