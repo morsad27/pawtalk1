@@ -1,19 +1,22 @@
-import { Alert, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import ScreenWrapper from '../../components/ScreenWrapper'
 import { useAuth } from '../../contexts/AuthContext'
-import { useRouter } from 'expo-router'
+import { router, useRouter } from 'expo-router'
 import Header from '../../components/Header'
 import { wp, hp } from '../../helpers/common'
 import Icon from '../../assets/icons'
 import { theme } from '../../constants/theme'
 import { supabase } from '../../lib/supabase'
 import Avatar from '../../components/Avatar'
+import Colors from '../../constants/Colors'
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Profile = () => {
+
     const { user, setAuth } = useAuth(); // Get user and setAuth from context
     const router = useRouter(); // Get the router object
-
+    
     const onLogout = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) {
@@ -41,8 +44,28 @@ const Profile = () => {
             {/* Update: Correctly passing router prop */}
             <UserHeader user={user} router={router} handleLogout={handleLogout} />
         </ScreenWrapper>
+        
     );
 };
+
+const Menu=[
+    {
+      id: 1,
+      name:'Add new Pet',
+      icon:'paw',
+      path:'/add-new-pet'
+    },
+    {
+      id: 2,
+      name:'My Post',
+      icon:'paw',
+      path:'/../user-post'
+    }]
+    
+const onPressMenu=(menu)=>{
+   
+    router.push(menu.path)
+  }
 
 // UserHeader component to display user information
 const UserHeader = ({ user, router, handleLogout }) => {
@@ -50,6 +73,7 @@ const UserHeader = ({ user, router, handleLogout }) => {
     //console.log('Router:', router); // Log the router object for debugging
 
     return (
+
         <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: wp(4) }}>
             <View>
                 <Header title="Profile" mb={30} />
@@ -99,7 +123,47 @@ const UserHeader = ({ user, router, handleLogout }) => {
                     </View>
                 </View>
             </View>
+
+            <FlatList 
+            data={Menu}
+            renderItem={({item,index})=>(
+                <TouchableOpacity 
+                onPress={()=>onPressMenu(item)}
+                key={index}
+                style={{
+                marginVertical:10,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap:10,
+                backgroundColor:Colors.WHITE,
+                padding:10,
+                borderRadius:10
+                }}>
+                <Ionicons 
+                name={item.icon} 
+                size={35} 
+                color={Colors.SECONDARY} 
+                style={{
+                    padding:10,
+                    backgroundColor:Colors.LIGHT_PRIMARY,
+                    borderRadius:10,
+                }}/>
+                <Text 
+                    style={{
+                    fontFamily: 'regular',
+                    fontSize:20,
+                }}
+                >
+                    {item.name}
+                    </Text>
+                </TouchableOpacity>
+                )} 
+            />
+           
         </View>
+    
+    
     );
 };
 
